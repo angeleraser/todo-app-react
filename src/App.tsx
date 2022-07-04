@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { AddTodoForm } from './components/AddTodoForm';
 import { TabBar } from './components/TabBar';
 
 const TAB_ACTIONS = ['All', 'Active', 'Completed'];
-const initialAction = TAB_ACTIONS[1];
+const initialAction = TAB_ACTIONS[0];
 
 function App() {
 	const [currentView, setCurrentView] = useState(initialAction);
+
+	const handleAddTodo = (label: string) => {
+		console.log(label);
+	};
 
 	return (
 		<div className='App'>
@@ -19,6 +24,8 @@ function App() {
 				/>
 
 				<h1>{currentView}</h1>
+
+				<AddTodoForm onSubmit={handleAddTodo} />
 			</div>
 		</div>
 	);

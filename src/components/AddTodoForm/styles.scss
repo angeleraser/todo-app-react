@@ -1,0 +1,28 @@
+@import '../../scss/index';
+
+.add-todo-form {
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+
+	.app-button {
+		min-width: 110px;
+	}
+
+	input {
+		height: 100%;
+		min-height: 40px;
+		border: 1px solid $gray-1;
+		border-radius: 12px;
+		padding: 20px 12px;
+		font-family: $font-montserrat;
+		color: $black-1;
+		font-weight: 400;
+		margin-right: 24px;
+		width: 100%;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
