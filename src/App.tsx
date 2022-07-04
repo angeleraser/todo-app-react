@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { TabBar } from './components/TabBar';
+
+const TAB_ACTIONS = ['All', 'Active', 'Completed'];
+const initialAction = TAB_ACTIONS[1];
 
 function App() {
+	const [currentView, setCurrentView] = useState(initialAction);
+
 	return (
 		<div className='App'>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt commodi
-			nobis impedit, magni illum, at cum adipisci modi veritatis dolorem
-			suscipit maxime quas iste nemo aspernatur rem facere laboriosam ex?
+			<div className='todo-content'>
+				<h1 className='todo-content__title'>#todo</h1>
+
+				<TabBar
+					actions={TAB_ACTIONS}
+					onSelectAction={(value) => setCurrentView(value)}
+					initialAction={initialAction}
+				/>
+
+				<h1>{currentView}</h1>
+			</div>
 		</div>
 	);
 }
