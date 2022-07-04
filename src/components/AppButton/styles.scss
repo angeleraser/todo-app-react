@@ -1,0 +1,80 @@
+@import '../../scss/index';
+
+@function boxShadow($color) {
+	$result: 0px 2px 6px 0px
+		rgba(
+			$color: $color,
+			$alpha: 0.15,
+		);
+
+	@return $result;
+}
+
+.app-button {
+	$shadow-alpha: 0.15;
+	background-color: transparent;
+	border: none;
+	display: flex;
+	flex-wrap: nowrap;
+	padding: 6px;
+	align-items: center;
+	box-shadow: boxShadow($black-1);
+	border-radius: 12px;
+	color: $black-1;
+
+	&--transparent {
+		background-color: transparent !important;
+	}
+
+	&--no-box-shadow {
+		box-shadow: none !important;
+	}
+
+	&__icon {
+		line-height: 0;
+		font-size: 20px;
+
+		.material-icons {
+			font-size: 1em;
+		}
+
+		&--gray {
+			color: $gray-1 !important;
+		}
+	}
+
+	&__text {
+		font-family: $font-montserrat;
+		font-weight: 600;
+		font-size: 12px;
+		margin-left: 4px;
+	}
+
+	&--padding-none {
+		padding: 0;
+	}
+
+	&--padding-s {
+		padding: 6px 13px;
+	}
+
+	&--padding-m {
+		padding: 12px 26px;
+	}
+
+	&--padding-l {
+		padding: 24px 52px;
+	}
+
+	&--blue {
+		background-color: $blue-1;
+		box-shadow: boxShadow($blue-1);
+		color: $white;
+	}
+
+	&--negative {
+		background-color: $negative;
+		box-shadow: boxShadow($negative);
+		color: $white;
+	}
+}
