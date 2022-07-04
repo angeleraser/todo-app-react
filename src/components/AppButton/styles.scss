@@ -21,6 +21,7 @@
 	box-shadow: boxShadow($black-1);
 	border-radius: 12px;
 	color: $black-1;
+	min-height: 40px;
 
 	&--transparent {
 		background-color: transparent !important;
@@ -47,6 +48,9 @@
 		font-family: $font-montserrat;
 		font-weight: 600;
 		font-size: 12px;
+	}
+
+	&__icon + &__text {
 		margin-left: 4px;
 	}
 

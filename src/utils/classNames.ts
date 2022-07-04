@@ -1,17 +1,13 @@
 const classNames = (deps: { [key: string]: boolean }) => {
-	const classesStr = Object.entries(deps)
+	const classes = Object.entries(deps)
 		.map((item) => {
 			const [key, value] = item;
-
 			if (!value || !key) return '';
-
-			return key;
+			return ` ${key}`;
 		})
-		.join(' ');
+		.join('');
 
-	if (!classesStr.length) return '';
-
-	return ` ${classesStr}`;
+	return classes.length ? classes : '';
 };
 
 export { classNames };

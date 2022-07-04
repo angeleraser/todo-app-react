@@ -13,7 +13,7 @@ interface AppButtonProps {
 }
 
 export const AppButton = (props: AppButtonProps) => {
-	const classObj = {
+	const buttonClasses = {
 		'app-button--no-box-shadow': !!props.withoutBoxShadow,
 		'app-button--transparent': !!props.transparent,
 		[`app-button--${props.color}`]: !!props.color,
@@ -21,7 +21,7 @@ export const AppButton = (props: AppButtonProps) => {
 	};
 
 	return (
-		<button className={`app-button${classNames(classObj)}`}>
+		<button className={`app-button${classNames(buttonClasses)}`}>
 			{props.icon ? (
 				<span
 					className={`app-button__icon${classNames({

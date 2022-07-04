@@ -1,10 +1,12 @@
 import React from 'react';
-import { AppButton } from './components/AppButton';
 
 function App() {
 	return (
 		<div className='App'>
-			<AppButton color='blue' label='Add' padding='m' />
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam autem
+			at, eum ipsa qui, doloribus omnis incidunt repudiandae vel nesciunt
+			tempora, voluptate commodi. Voluptatum dolore excepturi et earum nisi
+			neque.
 		</div>
 	);
 }
