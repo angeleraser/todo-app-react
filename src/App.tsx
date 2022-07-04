@@ -3,10 +3,9 @@ import React from 'react';
 function App() {
 	return (
 		<div className='App'>
-			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam autem
-			at, eum ipsa qui, doloribus omnis incidunt repudiandae vel nesciunt
-			tempora, voluptate commodi. Voluptatum dolore excepturi et earum nisi
-			neque.
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt commodi
+			nobis impedit, magni illum, at cum adipisci modi veritatis dolorem
+			suscipit maxime quas iste nemo aspernatur rem facere laboriosam ex?
 		</div>
 	);
 }
