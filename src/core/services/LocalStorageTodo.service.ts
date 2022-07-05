@@ -99,6 +99,10 @@ class LocalStorageTodoService implements TodoService {
 
 		return collection;
 	}
+
+	public static sortByActive(todos: Array<Todo>) {
+		return [...todos].sort((a, b) => Number(a.completed) - Number(b.completed));
+	}
 }
 
 export { LocalStorageTodoService };

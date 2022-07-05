@@ -19,7 +19,8 @@ function App() {
 
 	const fetchTodos = async (handler: () => Promise<Todo[]>) => {
 		const todos = await handler.apply(TodoService);
-		setTodoList(todos);
+		const sortedList = LocalStorageTodoService.sortByActive(todos);
+		setTodoList(sortedList);
 	};
 
 	const updateTodoList = () => {
