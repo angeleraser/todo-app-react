@@ -14,6 +14,7 @@ export const AddTodoForm = ({ onSubmit }: AddTodoFormProps) => {
 		onSubmit(todoLabel);
 		setTodoLabel('');
 	};
+
 	return (
 		<form onSubmit={handleSubmit} className='add-todo-form'>
 			<input

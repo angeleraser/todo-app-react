@@ -25,17 +25,21 @@
 			font-weight: 700;
 			color: $black-1;
 			font-family: $font-raleway;
-			margin-bottom: 60px;
+			margin-bottom: 30px;
 		}
 
 		.delete-all-btn {
 			position: absolute;
-			bottom: 32px;
+			bottom: 0;
 			right: 16px;
 		}
 
 		@media screen and (min-width: $breakpoint) {
 			padding: 32px;
+
+			&__title {
+				margin-bottom: 60px;
+			}
 
 			.delete-all-btn {
 				right: 32px;

@@ -4,6 +4,7 @@ import { Todo } from '../../core/domain/models/Todo';
 import { TodoContext } from '../../contexts/TodoContext';
 import { TodoItem } from '../TodoItem';
 import React, { useContext } from 'react';
+import { getEmptyTodoListMessage } from '../../utils/getEmptyTodoListMessage';
 
 interface TodoListProps {
 	items: Todo[];
@@ -29,6 +30,12 @@ export const TodoList = (props: TodoListProps) => {
 					/>
 				);
 			})}
+
+			{!props.items.length ? (
+				<p className='todo-list__empty-message'>
+					{getEmptyTodoListMessage(currentView)}
+				</p>
+			) : null}
 		</div>
 	);
 };

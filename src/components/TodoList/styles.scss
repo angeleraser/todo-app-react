@@ -1,9 +1,28 @@
+@import '../../scss//index.scss';
+
 .todo-list {
 	width: 100%;
 	height: 100%;
-	max-height: calc(100vh - 320px);
+	max-height: calc(100vh - 260px);
 	overflow-y: auto;
 	padding-bottom: 56px;
+
+	&__empty-message {
+		font-family: $font-raleway;
+		color: $gray-1;
+		font-size: 16px;
+		text-align: center;
+		font-weight: 500;
+		opacity: 0.7;
+	}
+
+	@media screen and (min-width: $breakpoint) {
+		max-height: calc(100vh - 480px);
+
+		&__empty-message {
+			font-size: 20px;
+		}
+	}
 
 	& > .todo-item:not(:last-child) {
 		margin-bottom: 24px;

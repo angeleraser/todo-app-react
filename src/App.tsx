@@ -3,7 +3,7 @@ import { AddTodoForm } from './components/AddTodoForm';
 import { AppButton } from './components/AppButton';
 import { TabBar } from './components/TabBar';
 import { TodoList } from './components/TodoList';
-import { TodoContext } from './contexts/TodoContext';
+import { TodoProvider } from './contexts/TodoContext';
 import { TABS } from './core/constants/tabs';
 import { Todo } from './core/domain/models/Todo';
 import { LocalStorageTodoService } from './core/services/LocalStorageTodo.service';
@@ -58,6 +58,10 @@ function App() {
 	};
 
 	const handleRemoveAllCompletedTodos = async () => {
+		const isConfirmed = confirm('Are you sure you want to delete all tasks?');
+
+		if (!isConfirmed) return;
+
 		await TodoService.deleteAllCompleted();
 		updateTodoList();
 	};
@@ -69,7 +73,7 @@ function App() {
 	useEffect(updateTodoList, [currentView]);
 
 	return (
-		<TodoContext.Provider value={contextValue}>
+		<TodoProvider value={contextValue}>
 			<div className='App'>
 				<div className='todo-content'>
 					<h1 className='todo-content__title'>#todo</h1>
@@ -80,7 +84,9 @@ function App() {
 						initialAction={initialAction}
 					/>
 
-					<AddTodoForm onSubmit={handleAddTodo} />
+					{currentView !== TABS.COMPLETED ? (
+						<AddTodoForm onSubmit={handleAddTodo} />
+					) : null}
 
 					<TodoList
 						items={todoList}
@@ -100,7 +106,7 @@ function App() {
 					) : null}
 				</div>
 			</div>
-		</TodoContext.Provider>
+		</TodoProvider>
 	);
 }
 
