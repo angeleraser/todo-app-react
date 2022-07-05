@@ -7,14 +7,15 @@ import { TodoProvider } from './contexts/TodoContext';
 import { TABS } from './core/constants/tabs';
 import { Todo } from './core/domain/models/Todo';
 import { LocalStorageTodoService } from './core/services/LocalStorageTodo.service';
+import { lastView } from './utils/lastView';
 
 const TAB_ACTIONS = [TABS.ALL, TABS.ACTIVE, TABS.COMPLETED];
-const initialAction = TABS.ALL;
+const initialViiew = lastView.get();
 
 const TodoService = new LocalStorageTodoService();
 
 function App() {
-	const [currentView, setCurrentView] = useState(initialAction);
+	const [currentView, setCurrentView] = useState<TABS>(initialViiew);
 	const [todoList, setTodoList] = useState<Todo[]>([]);
 
 	const fetchTodos = async (handler: () => Promise<Todo[]>) => {
@@ -38,8 +39,8 @@ function App() {
 	};
 
 	const handleTodoStatusChange = (id: string) => {
-		return (completed: boolean) => {
-			TodoService.updateTodo({ completed, id });
+		return async (completed: boolean) => {
+			await TodoService.updateTodo({ completed, id });
 			updateTodoList();
 		};
 	};
@@ -71,7 +72,11 @@ function App() {
 		currentView,
 	};
 
-	useEffect(updateTodoList, [currentView]);
+	useEffect(() => {
+		updateTodoList();
+		lastView.set(currentView);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentView]);
 
 	return (
 		<TodoProvider value={contextValue}>
@@ -82,7 +87,7 @@ function App() {
 					<TabBar
 						actions={TAB_ACTIONS}
 						onSelectAction={setCurrentView}
-						initialAction={initialAction}
+						initialAction={initialViiew}
 					/>
 
 					{currentView !== TABS.COMPLETED ? (
