@@ -17,6 +17,7 @@ export const AddTodoForm = ({ onSubmit }: AddTodoFormProps) => {
 	return (
 		<form onSubmit={handleSubmit} className='add-todo-form'>
 			<input
+				required
 				value={todoLabel}
 				onChange={(event) => setTodoLabel(event.target.value)}
 				placeholder='add details'
