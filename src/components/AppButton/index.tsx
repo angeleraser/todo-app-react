@@ -11,6 +11,7 @@ interface AppButtonProps {
 	iconColor?: string;
 	transparent?: boolean;
 	onClick?: CallableFunction;
+	className?: string;
 }
 
 export const AppButton = (props: AppButtonProps) => {
@@ -24,7 +25,7 @@ export const AppButton = (props: AppButtonProps) => {
 	return (
 		<button
 			onClick={() => props.onClick && props.onClick()}
-			className={`app-button${classNames(buttonClasses)}`}
+			className={`app-button${classNames(buttonClasses)} ${props.className}`}
 		>
 			{props.icon ? (
 				<span

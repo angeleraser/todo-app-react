@@ -6,6 +6,7 @@ interface TodoService {
 	getAllActive(): Promise<Todo[]>;
 	addTodo(params: { label: string }): Promise<Todo>;
 	deleteTodo(params: { id: string }): Promise<Todo>;
+	deleteAllCompleted(): Promise<void>;
 	updateTodo(params: { completed: boolean; id: string }): Promise<Todo>;
 }
 

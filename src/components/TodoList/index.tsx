@@ -15,7 +15,7 @@ export const TodoList = (props: TodoListProps) => {
 	const { currentView } = useContext(TodoContext);
 
 	return (
-		<div className='todo-content__list'>
+		<div className='todo-list'>
 			{props.items.map(({ id, completed, label }) => {
 				return (
 					<TodoItem

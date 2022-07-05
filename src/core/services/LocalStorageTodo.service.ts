@@ -64,6 +64,11 @@ class LocalStorageTodoService implements TodoService {
 		return this.__collection.filter((item) => !item.completed);
 	}
 
+	public async deleteAllCompleted(): Promise<void> {
+		const activeTodos = await this.getAllActive();
+		this.collection = [...activeTodos];
+	}
+
 	private initLocalStorage() {
 		const collection = JSON.parse(
 			localStorage.getItem(this.COLLECTION_KEY) || 'null',

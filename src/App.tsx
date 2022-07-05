@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AddTodoForm } from './components/AddTodoForm';
+import { AppButton } from './components/AppButton';
 import { TabBar } from './components/TabBar';
 import { TodoList } from './components/TodoList';
 import { TodoContext } from './contexts/TodoContext';
@@ -42,17 +43,22 @@ function App() {
 		};
 	};
 
-	const handleAddTodo = (label: string) => {
-		TodoService.addTodo({ label });
+	const handleAddTodo = async (label: string) => {
+		await TodoService.addTodo({ label });
 		updateTodoList();
 	};
 
-	const handleRemoveTodo = (id: string) => {
+	const handleRemoveTodo = async (id: string) => {
 		const isConfirmed = confirm('Are you sure you want to delete this task?');
 
 		if (!isConfirmed) return;
 
-		TodoService.deleteTodo({ id });
+		await TodoService.deleteTodo({ id });
+		updateTodoList();
+	};
+
+	const handleRemoveAllCompletedTodos = async () => {
+		await TodoService.deleteAllCompleted();
 		updateTodoList();
 	};
 
@@ -81,6 +87,17 @@ function App() {
 						onRemove={handleRemoveTodo}
 						onChangeStatus={handleTodoStatusChange}
 					/>
+
+					{todoList.length && currentView === TABS.COMPLETED ? (
+						<AppButton
+							label='delete all'
+							icon='delete_outline'
+							color='negative'
+							padding='m'
+							className='delete-all-btn'
+							onClick={handleRemoveAllCompletedTodos}
+						/>
+					) : null}
 				</div>
 			</div>
 		</TodoContext.Provider>
