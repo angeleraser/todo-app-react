@@ -9,6 +9,7 @@ interface TodoItemProps {
 	removable?: boolean;
 	completed: boolean;
 	onStatusChange: (completed: boolean) => void;
+	onRemove: (todoId: string) => void;
 }
 
 export const TodoItem = (props: TodoItemProps) => {
@@ -26,6 +27,7 @@ export const TodoItem = (props: TodoItemProps) => {
 			{props.removable ? (
 				<div className='todo-item__actions'>
 					<AppButton
+						onClick={() => props.onRemove(props.id)}
 						icon='delete_outline'
 						iconColor='gray'
 						withoutBoxShadow

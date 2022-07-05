@@ -28,7 +28,7 @@ export const Checkbox = (props: CheckboxProps) => {
 
 			<label className='checkbox__label' htmlFor={props.id}>
 				<span className='checkbox__label__check'></span>
-				<span className='checkbox__label__text'>{props.label}</span>
+				<p className='checkbox__label__text'>{props.label}</p>
 			</label>
 		</div>
 	);

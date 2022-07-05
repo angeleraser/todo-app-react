@@ -15,34 +15,42 @@ function App() {
 	const [currentView, setCurrentView] = useState(initialAction);
 	const [todoList, setTodoList] = useState<Todo[]>([]);
 
-	const handleAddTodo = (label: string) => {
-		TodoService.addTodo({ label });
-		fetchTodosByStatus(TodoService.getAll);
-	};
-
-	const fetchTodosByStatus = async (handler: () => Promise<Todo[]>) => {
+	const fetchTodos = async (handler: () => Promise<Todo[]>) => {
 		const todos = await handler.apply(TodoService);
 		setTodoList(todos);
+	};
+
+	const updateTodoList = () => {
+		if (currentView === TABS.ALL) {
+			return void fetchTodos(TodoService.getAll);
+		}
+
+		if (currentView === TABS.ACTIVE) {
+			return void fetchTodos(TodoService.getAllActive);
+		}
+
+		if (currentView === TABS.COMPLETED) {
+			return void fetchTodos(TodoService.getAllCompleted);
+		}
 	};
 
 	const handleTodoStatusChange = (todo: Todo) => {
 		return (completed: boolean) => {
 			TodoService.updateTodo({ completed, id: todo.id });
+			updateTodoList();
 		};
 	};
 
-	useEffect(() => {
-		switch (currentView) {
-			case TABS.ALL:
-				return void fetchTodosByStatus(TodoService.getAll);
+	const handleAddTodo = (label: string) => {
+		TodoService.addTodo({ label });
+		updateTodoList();
+	};
 
-			case TABS.ACTIVE:
-				return void fetchTodosByStatus(TodoService.getAllActive);
-
-			case TABS.COMPLETED:
-				return void fetchTodosByStatus(TodoService.getAllCompleted);
-		}
-	}, [currentView]);
+	const handleRemoveTodo = (id: string) => {
+		TodoService.deleteTodo({ id });
+		updateTodoList();
+	};
+	useEffect(updateTodoList, [currentView]);
 
 	return (
 		<div className='App'>
@@ -67,6 +75,7 @@ function App() {
 								label={todo.label}
 								removable={currentView === TABS.COMPLETED}
 								onStatusChange={handleTodoStatusChange(todo)}
+								onRemove={handleRemoveTodo}
 							/>
 						);
 					})}

@@ -10,6 +10,7 @@ interface AppButtonProps {
 	withoutBoxShadow?: boolean;
 	iconColor?: string;
 	transparent?: boolean;
+	onClick?: CallableFunction;
 }
 
 export const AppButton = (props: AppButtonProps) => {
@@ -21,7 +22,10 @@ export const AppButton = (props: AppButtonProps) => {
 	};
 
 	return (
-		<button className={`app-button${classNames(buttonClasses)}`}>
+		<button
+			onClick={() => props.onClick && props.onClick()}
+			className={`app-button${classNames(buttonClasses)}`}
+		>
 			{props.icon ? (
 				<span
 					className={`app-button__icon${classNames({

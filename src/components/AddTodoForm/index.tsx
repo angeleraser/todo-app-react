@@ -21,6 +21,7 @@ export const AddTodoForm = ({ onSubmit }: AddTodoFormProps) => {
 				value={todoLabel}
 				onChange={(event) => setTodoLabel(event.target.value)}
 				placeholder='add details'
+				maxLength={64}
 			/>
 
 			<AppButton label='Add' color='blue' padding='m' />

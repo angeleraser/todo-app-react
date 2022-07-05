@@ -3,6 +3,10 @@
 	align-items: center;
 	justify-content: space-between;
 
+	&__checkbox {
+		width: calc(100% - 64px);
+	}
+
 	.app-button {
 		min-height: auto;
 	}
