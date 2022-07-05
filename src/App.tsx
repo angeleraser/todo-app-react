@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AddTodoForm } from './components/AddTodoForm';
 import { TabBar } from './components/TabBar';
-import { TodoItem } from './components/TodoItem';
+import { TodoList } from './components/TodoList';
+import { TodoContext } from './contexts/TodoContext';
 import { TABS } from './core/constants/tabs';
 import { Todo } from './core/domain/models/Todo';
 import { LocalStorageTodoService } from './core/services/LocalStorageTodo.service';
@@ -34,9 +35,9 @@ function App() {
 		}
 	};
 
-	const handleTodoStatusChange = (todo: Todo) => {
+	const handleTodoStatusChange = (id: string) => {
 		return (completed: boolean) => {
-			TodoService.updateTodo({ completed, id: todo.id });
+			TodoService.updateTodo({ completed, id });
 			updateTodoList();
 		};
 	};
@@ -47,41 +48,42 @@ function App() {
 	};
 
 	const handleRemoveTodo = (id: string) => {
+		const isConfirmed = confirm('Are you sure you want to delete this task?');
+
+		if (!isConfirmed) return;
+
 		TodoService.deleteTodo({ id });
 		updateTodoList();
 	};
+
+	const contextValue = {
+		currentView,
+	};
+
 	useEffect(updateTodoList, [currentView]);
 
 	return (
-		<div className='App'>
-			<div className='todo-content'>
-				<h1 className='todo-content__title'>#todo</h1>
+		<TodoContext.Provider value={contextValue}>
+			<div className='App'>
+				<div className='todo-content'>
+					<h1 className='todo-content__title'>#todo</h1>
 
-				<TabBar
-					actions={TAB_ACTIONS}
-					onSelectAction={setCurrentView}
-					initialAction={initialAction}
-				/>
+					<TabBar
+						actions={TAB_ACTIONS}
+						onSelectAction={setCurrentView}
+						initialAction={initialAction}
+					/>
 
-				<AddTodoForm onSubmit={handleAddTodo} />
+					<AddTodoForm onSubmit={handleAddTodo} />
 
-				<div className='todo-content__list'>
-					{todoList.map((todo) => {
-						return (
-							<TodoItem
-								completed={todo.completed}
-								id={todo.id}
-								key={todo.id}
-								label={todo.label}
-								removable={currentView === TABS.COMPLETED}
-								onStatusChange={handleTodoStatusChange(todo)}
-								onRemove={handleRemoveTodo}
-							/>
-						);
-					})}
+					<TodoList
+						items={todoList}
+						onRemove={handleRemoveTodo}
+						onChangeStatus={handleTodoStatusChange}
+					/>
 				</div>
 			</div>
-		</div>
+		</TodoContext.Provider>
 	);
 }
 
