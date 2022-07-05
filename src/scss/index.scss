@@ -33,6 +33,10 @@
 
 		&__list {
 			width: 100%;
+
+			& > .todo-item:not(:last-child) {
+				margin-bottom: 24px;
+			}
 		}
 	}
 }

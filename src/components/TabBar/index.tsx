@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
+import { TABS } from '../../core/constants/tabs';
 import { classNames } from '../../utils/classNames';
 import './styles.scss';
 
 interface TabBarProps {
-	actions: Array<string>;
-	onSelectAction?: (currentAction: string) => void;
+	actions: Array<TABS>;
+	onSelectAction?: (currentAction: TABS) => void;
 	initialAction: string;
 }
 
 export const TabBar = (props: TabBarProps) => {
 	const [activeAction, setActiveAction] = useState(props.initialAction);
 
-	const handleSelectAction = (action: string) => {
+	const handleSelectAction = (action: TABS) => {
 		setActiveAction(action);
 		if (props.onSelectAction) props.onSelectAction(action);
 	};
