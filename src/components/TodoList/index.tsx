@@ -1,36 +1,34 @@
 import './styles.scss';
 import { TABS } from '../../core/constants/tabs';
-import { Todo } from '../../core/domain/models/Todo';
 import { TodoItem } from '../TodoItem';
-import React from 'react';
+import React, { useContext } from 'react';
+import { TodoContext } from '../../contexts/TodoContext';
+import { getEmptyTodoListMessage } from '../../utils/getEmptyTodoListMessage';
+import { Todo } from '../../core/domain/models/Todo';
 
-interface TodoListProps {
-	items: Todo[];
-	onRemove: (id: string) => void;
-	onChangeStatus: (id: string) => (completed: boolean) => void;
-	emptyMsg: string;
-	selectedTab: TABS;
-}
+export const TodoList = ({ items }: { items: Todo[] }) => {
+	const { tab, changeStatus, remove } = useContext(TodoContext);
 
-export const TodoList = (props: TodoListProps) => {
 	return (
 		<div className='todo-list'>
-			{props.items.map(({ id, completed, label }) => {
+			{items.map(({ id, completed, label }) => {
 				return (
 					<TodoItem
 						completed={completed}
 						id={id}
 						key={id}
 						label={label}
-						onRemove={props.onRemove}
-						onStatusChange={props.onChangeStatus(id)}
-						removable={props.selectedTab === TABS.COMPLETED}
+						onRemove={remove}
+						onStatusChange={changeStatus(id)}
+						removable={tab === TABS.COMPLETED}
 					/>
 				);
 			})}
 
-			{!props.items.length ? (
-				<p className='todo-list__empty-message'>{props.emptyMsg}</p>
+			{!items.length ? (
+				<p className='todo-list__empty-message'>
+					{getEmptyTodoListMessage(tab)}
+				</p>
 			) : null}
 		</div>
 	);

@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { TodoContext } from '../../contexts/TodoContext';
 import { TABS } from '../../core/constants/tabs';
 import { classNames } from '../../utils/classNames';
 import './styles.scss';
 
 interface TabBarProps {
 	actions: Array<TABS>;
-	onSelectAction?: (currentAction: TABS) => void;
-	initialAction: string;
 }
 
 export const TabBar = (props: TabBarProps) => {
-	const [activeAction, setActiveAction] = useState(props.initialAction);
+	const { tab, setTab } = useContext(TodoContext);
 
 	const handleSelectAction = (action: TABS) => {
-		setActiveAction(action);
-		if (props.onSelectAction) props.onSelectAction(action);
+		setTab(action);
 	};
 
 	return (
@@ -23,7 +21,7 @@ export const TabBar = (props: TabBarProps) => {
 				{props.actions.map((label, indx) => (
 					<button
 						className={`tab-bar__actions__item${classNames({
-							'tab-bar__actions__item--active': activeAction === label,
+							'tab-bar__actions__item--active': tab === label,
 						})}`}
 						key={indx}
 						onClick={() => handleSelectAction(label)}
