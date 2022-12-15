@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AddTodoForm } from './components/AddTodoForm';
 import { AppButton } from './components/AppButton';
 import { TabBar } from './components/TabBar';
@@ -10,12 +10,12 @@ import { LocalStorageTodoService } from './core/services/LocalStorageTodo.servic
 import { lastView } from './utils/lastView';
 
 const TAB_ACTIONS = [TABS.ALL, TABS.ACTIVE, TABS.COMPLETED];
-const initialViiew = lastView.get();
+const initialView = lastView.get();
 
 const TodoService = new LocalStorageTodoService();
 
 function App() {
-	const [currentView, setCurrentView] = useState<TABS>(initialViiew);
+	const [currentView, setCurrentView] = useState<TABS>(initialView);
 	const [todoList, setTodoList] = useState<Todo[]>([]);
 
 	const fetchTodos = async (handler: () => Promise<Todo[]>) => {
@@ -24,7 +24,7 @@ function App() {
 		setTodoList(sortedList);
 	};
 
-	const updateTodoList = () => {
+	const updateList = () => {
 		if (currentView === TABS.ALL) {
 			return void fetchTodos(TodoService.getAll);
 		}
@@ -38,66 +38,59 @@ function App() {
 		}
 	};
 
-	const handleTodoStatusChange = (id: string) => {
+	const onTodoStatusChange = (id: string) => {
 		return async (completed: boolean) => {
 			await TodoService.updateTodo({ completed, id });
-			updateTodoList();
+			updateList();
 		};
 	};
 
-	const handleAddTodo = async (label: string) => {
+	const handleAdd = async (label: string) => {
 		await TodoService.addTodo({ label });
-		updateTodoList();
+		updateList();
 	};
 
-	const handleRemoveTodo = async (id: string) => {
-		const isConfirmed = confirm('Are you sure you want to delete this task?');
+	const handleRemove = async (id?: string) => {
+		let msg = 'Are you sure you want to delete this task?';
+		if (!id) msg = 'Are you sure you want to delete all tasks?';
 
-		if (!isConfirmed) return;
+		const handler = id
+			? TodoService.deleteTodo
+			: TodoService.deleteAllCompleted;
 
-		await TodoService.deleteTodo({ id });
-		updateTodoList();
+		if (!confirm(msg)) return;
+
+		await handler.bind(TodoService)({ id: id as string });
+		updateList();
 	};
 
-	const handleRemoveAllCompletedTodos = async () => {
-		const isConfirmed = confirm('Are you sure you want to delete all tasks?');
-
-		if (!isConfirmed) return;
-
-		await TodoService.deleteAllCompleted();
-		updateTodoList();
+	const handleSetTab = (name: TABS) => {
+		setCurrentView(name);
+		lastView.set(name);
 	};
 
-	const contextValue = {
-		currentView,
-	};
-
-	useEffect(() => {
-		updateTodoList();
-		lastView.set(currentView);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentView]);
+	useEffect(updateList, [currentView]);
 
 	return (
-		<TodoProvider value={contextValue}>
+		<TodoProvider value={{ currentView }}>
 			<div className='App'>
 				<div className='todo-content'>
 					<h1 className='todo-content__title'>#todo</h1>
 
 					<TabBar
 						actions={TAB_ACTIONS}
-						onSelectAction={setCurrentView}
-						initialAction={initialViiew}
+						onSelectAction={handleSetTab}
+						initialAction={initialView}
 					/>
 
 					{currentView !== TABS.COMPLETED ? (
-						<AddTodoForm onSubmit={handleAddTodo} />
+						<AddTodoForm onSubmit={handleAdd} />
 					) : null}
 
 					<TodoList
 						items={todoList}
-						onRemove={handleRemoveTodo}
-						onChangeStatus={handleTodoStatusChange}
+						onRemove={handleRemove}
+						onChangeStatus={onTodoStatusChange}
 					/>
 
 					{todoList.length && currentView === TABS.COMPLETED ? (
@@ -107,7 +100,7 @@ function App() {
 							color='negative'
 							padding='m'
 							className='delete-all-btn'
-							onClick={handleRemoveAllCompletedTodos}
+							onClick={() => handleRemove()}
 						/>
 					) : null}
 				</div>
