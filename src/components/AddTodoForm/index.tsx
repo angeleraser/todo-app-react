@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useRef } from 'react';
 import { AppButton } from '../AppButton';
 import './styles.scss';
 
@@ -7,12 +7,12 @@ interface AddTodoFormProps {
 }
 
 export const AddTodoForm = ({ onSubmit }: AddTodoFormProps) => {
-	const [todoLabel, setTodoLabel] = useState('');
+	const labelRef = useRef<HTMLInputElement | null>(null);
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		onSubmit(todoLabel);
-		setTodoLabel('');
+		onSubmit(labelRef.current?.value as string);
+		labelRef.current && (labelRef.current.value = '');
 	};
 
 	return (
@@ -20,8 +20,7 @@ export const AddTodoForm = ({ onSubmit }: AddTodoFormProps) => {
 			<input
 				className='add-todo-form__input'
 				required
-				value={todoLabel}
-				onChange={(event) => setTodoLabel(event.target.value)}
+				ref={labelRef}
 				placeholder='add details'
 				maxLength={64}
 			/>

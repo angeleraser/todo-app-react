@@ -3,10 +3,10 @@ import { AddTodoForm } from './components/AddTodoForm';
 import { AppButton } from './components/AppButton';
 import { TabBar } from './components/TabBar';
 import { TodoList } from './components/TodoList';
-import { TodoProvider } from './contexts/TodoContext';
 import { TABS } from './core/constants/tabs';
 import { Todo } from './core/domain/models/Todo';
 import { LocalStorageTodoService } from './core/services/LocalStorageTodo.service';
+import { getEmptyTodoListMessage } from './utils/getEmptyTodoListMessage';
 import { lastView } from './utils/lastView';
 
 const TAB_ACTIONS = [TABS.ALL, TABS.ACTIVE, TABS.COMPLETED];
@@ -72,40 +72,40 @@ function App() {
 	useEffect(updateList, [currentView]);
 
 	return (
-		<TodoProvider value={{ currentView }}>
-			<div className='App'>
-				<div className='todo-content'>
-					<h1 className='todo-content__title'>#todo</h1>
+		<div className='App'>
+			<div className='todo-content'>
+				<h1 className='todo-content__title'>#todo</h1>
 
-					<TabBar
-						actions={TAB_ACTIONS}
-						onSelectAction={handleSetTab}
-						initialAction={initialView}
+				<TabBar
+					actions={TAB_ACTIONS}
+					onSelectAction={handleSetTab}
+					initialAction={initialView}
+				/>
+
+				{currentView !== TABS.COMPLETED ? (
+					<AddTodoForm onSubmit={handleAdd} />
+				) : null}
+
+				<TodoList
+					emptyMsg={getEmptyTodoListMessage(currentView)}
+					items={todoList}
+					onChangeStatus={onTodoStatusChange}
+					onRemove={handleRemove}
+					selectedTab={currentView}
+				/>
+
+				{todoList.length && currentView === TABS.COMPLETED ? (
+					<AppButton
+						label='delete all'
+						icon='delete_outline'
+						color='negative'
+						padding='m'
+						className='delete-all-btn'
+						onClick={() => handleRemove()}
 					/>
-
-					{currentView !== TABS.COMPLETED ? (
-						<AddTodoForm onSubmit={handleAdd} />
-					) : null}
-
-					<TodoList
-						items={todoList}
-						onRemove={handleRemove}
-						onChangeStatus={onTodoStatusChange}
-					/>
-
-					{todoList.length && currentView === TABS.COMPLETED ? (
-						<AppButton
-							label='delete all'
-							icon='delete_outline'
-							color='negative'
-							padding='m'
-							className='delete-all-btn'
-							onClick={() => handleRemove()}
-						/>
-					) : null}
-				</div>
+				) : null}
 			</div>
-		</TodoProvider>
+		</div>
 	);
 }
 
